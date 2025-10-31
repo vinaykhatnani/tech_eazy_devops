@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+# Update system and install required packages
+apt-get update -y
+apt-get install -y openjdk-21-jdk maven git curl
+
+# Go to home directory
+cd /home/ubuntu || cd /root
+
+# Clone the test repository
+git clone https://github.com/Trainings-TechEazy/test-repo-for-devops.git
+cd test-repo-for-devops || exit 0
+
+# Build the project
+mvn clean package
+
+# Run the JAR file (update jar name if different)
+nohup java -jar target/techeazy-devops-0.0.1-SNAPSHOT.jar > /var/log/app.log 2>&1 &
+
+# Schedule automatic shutdown after 60 minutes (cost saving)
+shutdown -h +60
